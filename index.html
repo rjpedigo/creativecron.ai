@@ -69,7 +69,6 @@
     z-index: 1;
   }
 
-  /* ── HEADER ── */
   header {
     padding: 60px 0 40px;
     border-bottom: 1px solid var(--border);
@@ -402,7 +401,6 @@
 
   .card.community-card { border-left: 2px solid var(--green); }
 
-  /* Vote column */
   .vote-col {
     display: flex;
     flex-direction: column;
@@ -428,13 +426,10 @@
   }
 
   .vote-btn svg { transition: all 0.15s; }
-
   .vote-btn.up svg { color: var(--text-muted); }
   .vote-btn.down svg { color: var(--text-muted); }
-
   .vote-btn.up:hover svg { color: var(--upvote); transform: scale(1.2); }
   .vote-btn.down:hover svg { color: var(--downvote); transform: scale(1.2); }
-
   .vote-btn.up.voted svg { color: var(--upvote-active); }
   .vote-btn.down.voted svg { color: var(--red); }
 
@@ -451,7 +446,6 @@
   .vote-score.positive { color: var(--upvote); }
   .vote-score.negative { color: var(--red); }
 
-  /* Content column */
   .card-content {
     flex: 1;
     padding: 22px 22px 22px 8px;
@@ -474,11 +468,7 @@
     line-height: 1.4;
   }
 
-  .card-badges {
-    display: flex;
-    gap: 6px;
-    flex-shrink: 0;
-  }
+  .card-badges { display: flex; gap: 6px; flex-shrink: 0; }
 
   .card-category {
     font-family: 'JetBrains Mono', monospace;
@@ -526,11 +516,7 @@
   .card-cron .flag { color: var(--accent); }
   .card-cron .string { color: var(--blue); }
 
-  .card-meta {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
+  .card-meta { display: flex; gap: 8px; flex-wrap: wrap; }
 
   .meta-tag {
     font-family: 'JetBrains Mono', monospace;
@@ -543,7 +529,6 @@
 
   .meta-tag.author { border-color: var(--green); color: var(--green); }
 
-  /* Category colors */
   .cat-productivity   { background: var(--blue-dim);   color: var(--blue);   border: 1px solid var(--blue); }
   .cat-health         { background: var(--green-dim);  color: var(--green);  border: 1px solid var(--green); }
   .cat-finance        { background: var(--yellow-dim); color: var(--yellow); border: 1px solid var(--yellow); }
@@ -553,7 +538,6 @@
   .cat-learning       { background: var(--accent-dim); color: var(--accent); border: 1px solid var(--accent); }
   .cat-social         { background: var(--red-dim);    color: var(--red);    border: 1px solid var(--red); }
 
-  /* ── COPY BUTTON ── */
   .copy-btn {
     position: absolute;
     top: 8px;
@@ -574,7 +558,196 @@
   .copy-btn:hover { color: var(--accent); border-color: var(--accent); }
   .copy-btn.copied { color: var(--green); border-color: var(--green); }
 
-  /* ── TOAST ── */
+  /* ── EMAIL MODAL ── */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(4px);
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+  }
+
+  .modal-overlay.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .email-modal {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 36px;
+    max-width: 440px;
+    width: 90%;
+    transform: translateY(20px) scale(0.97);
+    transition: transform 0.25s ease;
+  }
+
+  .modal-overlay.open .email-modal {
+    transform: translateY(0) scale(1);
+  }
+
+  .email-modal .modal-icon {
+    font-size: 36px;
+    margin-bottom: 12px;
+  }
+
+  .email-modal h3 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px;
+    color: var(--text-bright);
+    margin-bottom: 8px;
+  }
+
+  .email-modal p {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    line-height: 1.6;
+  }
+
+  .email-modal .email-input-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .email-modal input[type="email"] {
+    flex: 1;
+    padding: 12px 16px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .email-modal input[type="email"]:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-dim);
+  }
+
+  .email-modal .btn-email {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    padding: 12px 20px;
+    background: var(--accent);
+    border: none;
+    border-radius: 8px;
+    color: var(--bg);
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .email-modal .btn-email:hover { opacity: 0.9; }
+  .email-modal .btn-email:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .email-modal .modal-fine-print {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    opacity: 0.6;
+  }
+
+  .email-modal .newsletter-check {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+    cursor: pointer;
+  }
+
+  .email-modal .newsletter-check input {
+    accent-color: var(--accent);
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+  }
+
+  .email-modal .newsletter-check label {
+    font-size: 13px;
+    color: var(--text-muted);
+    cursor: pointer;
+  }
+
+  /* ── NEWSLETTER FOOTER ── */
+  .newsletter-strip {
+    margin-top: 24px;
+    padding: 20px 24px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .newsletter-strip p {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  .newsletter-strip p span { color: var(--accent); }
+
+  .newsletter-strip .nl-form {
+    display: flex;
+    gap: 8px;
+  }
+
+  .newsletter-strip input {
+    padding: 10px 14px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    outline: none;
+    width: 240px;
+    transition: border-color 0.2s;
+  }
+
+  .newsletter-strip input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-dim);
+  }
+
+  .newsletter-strip button {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    padding: 10px 16px;
+    background: var(--accent);
+    border: none;
+    border-radius: 6px;
+    color: var(--bg);
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+  }
+
+  .newsletter-strip button:hover { opacity: 0.9; }
+
+  .newsletter-strip .nl-success {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--green);
+    display: none;
+  }
+
   .toast {
     position: fixed;
     bottom: 30px;
@@ -593,12 +766,8 @@
     font-weight: 600;
   }
 
-  .toast.show {
-    transform: translateX(-50%) translateY(0);
-    opacity: 1;
-  }
+  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
-  /* ── FOOTER ── */
   footer {
     border-top: 1px solid var(--border);
     padding: 40px 0;
@@ -625,7 +794,6 @@
     margin-top: 12px;
   }
 
-  /* ── EMPTY STATE ── */
   .empty-state {
     grid-column: 1 / -1;
     text-align: center;
@@ -636,7 +804,6 @@
   .empty-state .big { font-size: 48px; margin-bottom: 16px; }
   .empty-state p { font-family: 'JetBrains Mono', monospace; font-size: 14px; }
 
-  /* ── LOADING ── */
   .loading-overlay {
     grid-column: 1 / -1;
     text-align: center;
@@ -656,7 +823,6 @@
 
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* ── RESPONSIVE ── */
   @media (max-width: 768px) {
     .grid { grid-template-columns: 1fr; }
     header { padding: 40px 0 24px; }
@@ -669,7 +835,6 @@
     .card-content { padding: 18px 16px 18px 4px; }
   }
 
-  /* ── ANIMATIONS ── */
   @keyframes fadeInUp {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
@@ -695,7 +860,7 @@
   <header>
     <div class="header-top">
       <div class="logo">🦞 <span class="domain">creativecron</span><span class="tld">.ai</span></div>
-      <span class="version-badge">v0.2.0</span>
+      <span class="version-badge">v1.0.0</span>
       <span class="community-badge">community-driven</span>
     </div>
     <p>
@@ -709,7 +874,6 @@
     </div>
   </header>
 
-  <!-- SUBMIT PANEL -->
   <div class="submit-panel" id="submitPanel">
     <div class="submit-form">
       <h3>$ submit-cron-job</h3>
@@ -761,7 +925,6 @@
     </div>
   </div>
 
-  <!-- CONTROLS -->
   <div class="controls">
     <div class="search-box">
       <input type="text" id="search" placeholder="grep -i 'your idea here'" autocomplete="off">
@@ -778,7 +941,7 @@
     <span style="color:var(--border);padding:0 4px">│</span>
     <button class="sort-btn active" data-sort="top" onclick="setSort('top')">⬆ top</button>
     <button class="sort-btn" data-sort="new" onclick="setSort('new')">✦ new</button>
-    <button class="submit-toggle-btn" onclick="toggleSubmit()" disabled style="opacity:0.5;cursor:not-allowed">+ submit job (coming soon)</button>
+    <button class="submit-toggle-btn" onclick="toggleSubmit()">+ submit job</button>
     <span class="count-display" id="count"></span>
   </div>
 
@@ -799,438 +962,180 @@
       Powered by <a href="https://github.com/openclaw/openclaw" target="_blank">OpenClaw</a>.
       All cron jobs are community-submitted and open source.
     </p>
-    <p style="margin-top:12px;color:var(--yellow);font-family:'JetBrains Mono',monospace;font-size:12px;border:1px solid var(--yellow);border-radius:6px;display:inline-block;padding:8px 16px;background:var(--yellow-dim);">
-      ⚠ Voting &amp; community submissions are coming soon — backend is being wired up. Browse &amp; copy commands work now!
-    </p>
+    <div class="newsletter-strip" id="nlStrip">
+      <p>📬 <span>Get new cron jobs in your inbox</span> — weekly digest, no spam.</p>
+      <div class="nl-form" id="nlForm">
+        <input type="email" id="nl-email" placeholder="you@example.com">
+        <button onclick="subscribeNewsletter()">subscribe</button>
+      </div>
+      <p class="nl-success" id="nlSuccess">✓ You're in! Watch for the first digest.</p>
+    </div>
     <p class="footer-stats" id="footerStats"></p>
   </footer>
 </div>
 
-<!-- TOAST -->
+<!-- EMAIL GATE MODAL -->
+<div class="modal-overlay" id="emailModal">
+  <div class="email-modal">
+    <div class="modal-icon">🦞</div>
+    <h3>Join the community</h3>
+    <p>Enter your email to vote and submit cron jobs. One-time only — we'll remember you.</p>
+    <div class="email-input-row">
+      <input type="email" id="modal-email" placeholder="you@example.com" onkeydown="if(event.key==='Enter')confirmEmail()">
+      <button class="btn-email" id="emailConfirmBtn" onclick="confirmEmail()">let's go →</button>
+    </div>
+    <div class="newsletter-check">
+      <input type="checkbox" id="modal-newsletter" checked>
+      <label for="modal-newsletter">Also send me weekly cron job ideas</label>
+    </div>
+    <p class="modal-fine-print">No spam, unsubscribe anytime. We just store your email to identify votes.</p>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
+
+<!-- Firebase SDKs (compat mode for simple script tag usage) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
 <script>
 // ═══════════════════════════════════════════════
-// SEED DATA
+// FIREBASE INIT
 // ═══════════════════════════════════════════════
-const SEED_JOBS = [
-  {
-    id: "seed-001", title: "Morning Command Center",
-    desc: "Wake up to a briefing with today's weather, calendar events, top 3 inbox emails, and your priority tasks.",
-    cron: "0 6 * * *", schedule: "Daily @ 6:00 AM", category: "productivity",
-    message: "Send me a morning briefing: weather in my city, today's calendar events, top 3 unread emails by priority, and my open tasks. Keep it under 200 words.",
-    tags: ["daily","isolated","telegram"], votes: 47, community: false, ts: 1737100000000
-  },
-  {
-    id: "seed-002", title: "End-of-Day Shutdown Ritual",
-    desc: "Summary of what you accomplished today, loose threads, and a suggested priority list for tomorrow.",
-    cron: "0 18 * * 1-5", schedule: "Weekdays @ 6:00 PM", category: "productivity",
-    message: "Review today's activity. Summarize what I accomplished, flag anything unfinished, and draft my top 3 priorities for tomorrow. End with one thing I did well today.",
-    tags: ["weekdays","isolated","whatsapp"], votes: 39, community: false, ts: 1737100000000
-  },
-  {
-    id: "seed-003", title: "Weekly Review Prep",
-    desc: "Every Sunday evening, compile a structured review — wins, blockers, lessons learned, and goals for next week.",
-    cron: "0 19 * * 0", schedule: "Sundays @ 7:00 PM", category: "productivity",
-    message: "Prepare my weekly review. List this week's accomplishments, any blockers, lessons learned, and suggest 3 goals for next week.",
-    tags: ["weekly","isolated","email"], votes: 34, community: false, ts: 1737100000000
-  },
-  {
-    id: "seed-004", title: "Meeting Prep Assistant",
-    desc: "30 minutes before each calendar event, get attendee info, context, and suggested talking points.",
-    cron: "*/30 * * * 1-5", schedule: "Every 30 min (weekdays)", category: "productivity",
-    message: "Check my calendar for meetings starting in the next 30 minutes. Give me a prep brief: attendees, topic, relevant notes, and 3 talking points.",
-    tags: ["frequent","main-session"], votes: 41, community: false, ts: 1737100000000
-  },
-  {
-    id: "seed-005", title: "Inbox Zero Coach",
-    desc: "Twice daily email triage — categorize unread as urgent, needs response, FYI, or archive.",
-    cron: "0 9,14 * * 1-5", schedule: "Weekdays @ 9 AM & 2 PM", category: "productivity",
-    message: "Scan my unread emails. Categorize each as: 🔴 Urgent, 🟡 Needs Response, 🔵 FYI, or ⚪ Archive. Draft replies for urgent ones.",
-    tags: ["twice-daily","isolated"], votes: 36, community: false, ts: 1737100000000
-  },
-  {
-    id: "seed-006", title: "Focus Time Guardian",
-    desc: "During deep work blocks, only interrupt if something is genuinely critical.",
-    cron: "0 11 * * 1-5", schedule: "Weekdays @ 11:00 AM", category: "productivity",
-    message: "Check inbox and messages from the last 2 hours. Only notify me if genuinely time-sensitive. If nothing urgent, respond 'All clear — stay focused 🎯'.",
-    tags: ["weekdays","conditional"], votes: 28, community: false, ts: 1737100000000
-  },
-  {
-    id: "seed-007", title: "Paleo Meal Planner",
-    desc: "Every afternoon, get a creative high-protein, low-carb paleo dinner recipe with a grocery list.",
-    cron: "0 14 * * *", schedule: "Daily @ 2:00 PM", category: "health",
-    message: "Send me a creative paleo dinner recipe — high protein, low carb. Include macros, step-by-step instructions, and a grocery shopping list. No repeats from this week.",
-    tags: ["daily","isolated","telegram"], votes: 52, community: false, ts: 1737100000000
-  },
-  {
-    id: "seed-008", title: "Weekly Meal Prep Blueprint",
-    desc: "Sunday morning: 5 lunches and 5 dinners with a combined shopping list organized by aisle.",
-    cron: "0 8 * * 0", schedule: "Sundays @ 8:00 AM", category: "health",
-    message: "Create a weekly meal prep plan: 5 lunches and 5 dinners. High protein, anti-inflammatory. Shopping list organized by grocery section. Prep time under 3 hours total.",
-    tags: ["weekly","isolated","email"], votes: 45, community: false, ts: 1737100000000
-  },
-  {
-    id: "seed-009", title: "Hydration & Movement Nudge",
-    desc: "Every 2 hours during work, a reminder to drink water and a 2-minute stretch suggestion.",
-    cron: "0 9,11,13,15,17 * * 1-5", schedule: "Every 2hrs (9-5)", category: "health",
-    message: "Quick check-in: remind me to drink water and suggest one 2-minute stretch I can do at my desk. Make it different each time.",
-    tags: ["frequent","isolated"], votes: 22, community: false, ts: 1737100000000
-  },
-  {
-    id: "seed-010", title: "Workout Generator",
-    desc: "Custom workout plan alternating muscle groups. Bodyweight and dumbbells only, under 45 minutes.",
-    cron: "0 5 * * 1,3,5", schedule: "Mon/Wed/Fri @ 5 AM", category: "health",
-    message: "Generate today's workout. Alternate upper/lower/full body. Warm-up, main sets with reps, cool-down. Under 45 min, bodyweight + dumbbells only.",
-    tags: ["3x-weekly","isolated"], votes: 31, community: false, ts: 1737100000000
-  },
-  {
-    id: "seed-011", title: "CGM Glucose Insight Digest",
-    desc: "Evening review of your glucose patterns — spikes, steady periods, and food suggestions for tomorrow.",
-    cron: "0 20 * * *", schedule: "Daily @ 8:00 PM", category: "health",
-    message: "Review my glucose data from today. Identify spikes and likely causes. Note stable periods. Suggest one meal swap for tomorrow. Keep the tone encouraging.",
-    tags: ["daily","isolated","health-data"], votes: 29, community: false, ts: 1737100000000
-  },
-  {
-    id: "seed-012", title: "Market Morning Brief",
-    desc: "Pre-market stock quotes for your watchlist, movers, and top financial headlines.",
-    cron: "0 8 * * 1-5", schedule: "Weekdays @ 8:00 AM", category: "finance",
-    message: "Pre-market brief: S&P 500 futures, my watchlist (AAPL, MSFT, NVDA, TSLA, VOO), major premarket movers, and top 3 financial headlines.",
-    tags: ["weekdays","isolated","telegram"], votes: 43, community: false, ts: 1737100000000
-  },
-  {
-    id: "seed-013", title: "Real Estate Deal Scanner",
-    desc: "Daily scan for syndication opportunities, REIT news, and Fundrise portfolio updates.",
-    cron: "0 12 * * 1-5", schedule: "Weekdays @ 12:00 PM", category: "finance",
-    message: "Search for new real estate syndication deals and crowdfunding opportunities. Focus on value-add multifamily, 7%+ IRR, $50K+ minimums. Check Fundrise for updates.",
-    tags: ["weekdays","isolated","web-search"], votes: 26, community: false, ts: 1737100000000
-  },
-  {
-    id: "seed-014", title: "API Cost Watchdog",
-    desc: "Monitor AI API spending across providers. Alert if daily spend exceeds your threshold.",
-    cron: "0 22 * * *", schedule: "Daily @ 10:00 PM", category: "finance",
-    message: "Check my API usage today across all providers. Report total spend, tokens used, cost per provider. Alert if daily spend exceeded $5. Compare to 7-day average.",
-    tags: ["daily","isolated","cost-report"], votes: 38, community: false, ts: 1737100000000
-  },
-  {
-    id: "seed-015", title: "FIRE Progress Tracker",
-    desc: "Monthly snapshot of financial independence progress — net worth, savings rate, and projected timeline.",
-    cron: "0 9 1 * *", schedule: "1st of each month", category: "finance",
-    message: "Generate my monthly FIRE report: net worth estimate, savings rate, investment performance, updated FI date projection. Compare to last month.",
-    tags: ["monthly","isolated","email"], votes: 33, community: false, ts: 1737100000000
-  },
-  {
-    id: "seed-016", title: "Crypto Price Sentinel",
-    desc: "Only notify if there's been a 5%+ swing on your watchlist. Silence when flat.",
-    cron: "0 9,21 * * *", schedule: "Daily @ 9 AM & 9 PM", category: "finance",
-    message: "Check BTC, ETH, SOL prices. Only message me if any moved 5%+ in the last 12 hours. Include direction, %, and any obvious catalyst. If flat, stay silent.",
-    tags: ["twice-daily","conditional"], votes: 27, community: false, ts: 1737100000000
-  },
-  {
-    id: "seed-017", title: "Git Auto-Backup",
-    desc: "Hourly commit and push of workspace files. Never lose agent modifications again.",
-    cron: "0 * * * *", schedule: "Every hour", category: "devops",
-    message: "Run git add -A in my workspace. If changes exist, commit with 'auto: hourly backup [timestamp]' and push. If no changes, skip silently.",
-    tags: ["hourly","isolated","git"], votes: 44, community: false, ts: 1737100000000
-  },
-  {
-    id: "seed-018", title: "Server Health Pulse",
-    desc: "Check VPS vitals — CPU, memory, disk, processes. Alert only if something's off.",
-    cron: "*/15 * * * *", schedule: "Every 15 minutes", category: "devops",
-    message: "Check server health: CPU, memory, disk, key processes. Only alert if CPU > 80%, memory > 90%, disk > 85%, or a critical process is down. Otherwise stay silent.",
-    tags: ["frequent","conditional"], votes: 37, community: false, ts: 1737100000000
-  },
-  {
-    id: "seed-019", title: "SSL Certificate Watcher",
-    desc: "Weekly check of all your domains' SSL certs. Alert 30 days before expiration.",
-    cron: "0 9 * * 1", schedule: "Mondays @ 9:00 AM", category: "devops",
-    message: "Check SSL certificate expiration for all my domains. Flag any expiring within 30 days. If all healthy, send 'All certs valid ✅'.",
-    tags: ["weekly","isolated"], votes: 30, community: false, ts: 1737100000000
-  },
-  {
-    id: "seed-020", title: "Dependency Vulnerability Scanner",
-    desc: "Daily audit of project dependencies for known security vulnerabilities.",
-    cron: "0 6 * * *", schedule: "Daily @ 6:00 AM", category: "devops",
-    message: "Run npm audit and pip check on my projects. Report high/critical vulnerabilities with package name, severity, and fix. Skip low/moderate unless 10+.",
-    tags: ["daily","isolated","security"], votes: 32, community: false, ts: 1737100000000
-  },
-  {
-    id: "seed-021", title: "Docker Cleanup Crew",
-    desc: "Weekly prune of dangling images, stopped containers, and unused volumes.",
-    cron: "0 3 * * 0", schedule: "Sundays @ 3:00 AM", category: "devops",
-    message: "Run docker system prune for dangling images, stopped containers, unused networks. Report disk space reclaimed. Do NOT remove named volumes.",
-    tags: ["weekly","isolated","docker"], votes: 25, community: false, ts: 1737100000000
-  },
-  {
-    id: "seed-022", title: "Uptime Monitor",
-    desc: "Ping your sites every 5 minutes. Alert immediately on non-200 responses.",
-    cron: "*/5 * * * *", schedule: "Every 5 minutes", category: "devops",
-    message: "Ping my endpoints for 200 status. If any return non-200 or take >5 seconds, alert immediately with status code and response time. Otherwise stay silent.",
-    tags: ["frequent","conditional"], votes: 35, community: false, ts: 1737100000000
-  },
-  {
-    id: "seed-023", title: "Changelog Generator",
-    desc: "Friday auto-generated changelog from the week's git commits across all repos.",
-    cron: "0 17 * * 5", schedule: "Fridays @ 5:00 PM", category: "devops",
-    message: "Review all git commits this week. Generate a changelog grouped by Features, Fixes, Chores. Conventional commit style. Save to ~/workspace/changelogs/.",
-    tags: ["weekly","isolated","git"], votes: 24, community: false, ts: 1737100000000
-  },
-  {
-    id: "seed-024", title: "Log Anomaly Hunter",
-    desc: "Scan app logs for error spikes, new error types, or unusual patterns.",
-    cron: "0 */4 * * *", schedule: "Every 4 hours", category: "devops",
-    message: "Scan the last 4 hours of application logs. Identify error spikes, new error types, or unusual patterns. Only notify if something notable is found.",
-    tags: ["4-hourly","conditional"], votes: 23, community: false, ts: 1737100000000
-  },
-  {
-    id: "seed-025", title: "TikTok Content Generator",
-    desc: "Daily content ideas with hooks, scripts, and trending format suggestions for your niche.",
-    cron: "0 10 * * *", schedule: "Daily @ 10:00 AM", category: "creative",
-    message: "Generate 3 TikTok ideas for AI tools, career advice, and investing. Each: scroll-stopping hook, 30-second script outline, trending format. Mix educational and entertaining.",
-    tags: ["daily","isolated","telegram"], votes: 40, community: false, ts: 1737100000000
-  },
-  {
-    id: "seed-026", title: "Blog Post Idea Machine",
-    desc: "Weekly batch of SEO-optimized blog post ideas based on trending industry topics.",
-    cron: "0 9 * * 1", schedule: "Mondays @ 9:00 AM", category: "creative",
-    message: "Research trending topics in HRIS, AI automation, freelancing. Generate 5 blog ideas with title, target keyword, search volume estimate, and outline.",
-    tags: ["weekly","isolated","web-search"], votes: 29, community: false, ts: 1737100000000
-  },
-  {
-    id: "seed-027", title: "Daily Writing Prompt",
-    desc: "A creative writing prompt each morning — micro-fiction, essay, LinkedIn post, or newsletter hook.",
-    cron: "0 7 * * *", schedule: "Daily @ 7:00 AM", category: "creative",
-    message: "One creative writing prompt. Rotate: micro-fiction (100 words), personal essay topic, LinkedIn post idea, or newsletter hook. Thought-provoking and specific.",
-    tags: ["daily","isolated","whatsapp"], votes: 21, community: false, ts: 1737100000000
-  },
-  {
-    id: "seed-028", title: "Etsy Listing Optimizer",
-    desc: "Weekly audit of Etsy listings — titles, tags, and keyword improvements based on search trends.",
-    cron: "0 10 * * 3", schedule: "Wednesdays @ 10 AM", category: "creative",
-    message: "Research trending Etsy search terms for digital planners, tax tools, financial spreadsheets. Compare against my listings. Suggest title and tag updates for visibility.",
-    tags: ["weekly","isolated","web-search"], votes: 30, community: false, ts: 1737100000000
-  },
-  {
-    id: "seed-029", title: "Newsletter Draft Builder",
-    desc: "Curate interesting links and draft a newsletter skeleton from the week's saved content.",
-    cron: "0 14 * * 4", schedule: "Thursdays @ 2:00 PM", category: "creative",
-    message: "Review saved articles and notes from this week. Draft a newsletter: intro hook, 3-5 curated links with commentary, one personal insight, closing thought.",
-    tags: ["weekly","isolated","email"], votes: 26, community: false, ts: 1737100000000
-  },
-  {
-    id: "seed-030", title: "Weather-Based Outfit Planner",
-    desc: "Clothing suggestion each morning based on today's forecast and your calendar.",
-    cron: "0 6 * * *", schedule: "Daily @ 6:00 AM", category: "lifestyle",
-    message: "Check today's weather (high, low, rain chance). Cross-reference with my calendar. Suggest what to wear. Be practical and specific.",
-    tags: ["daily","isolated","weather"], votes: 19, community: false, ts: 1737100000000
-  },
-  {
-    id: "seed-031", title: "Weekend Adventure Finder",
-    desc: "Thursday evening, get local events, restaurants, and activities for the weekend.",
-    cron: "0 17 * * 4", schedule: "Thursdays @ 5:00 PM", category: "lifestyle",
-    message: "Search for interesting weekend activities in my area: events, new restaurants, outdoor activities, free things. Top 5 ranked by uniqueness. Include dates and links.",
-    tags: ["weekly","isolated","web-search"], votes: 33, community: false, ts: 1737100000000
-  },
-  {
-    id: "seed-032", title: "Package Tracking Hub",
-    desc: "Daily scan of your email for shipping notifications. All active deliveries in one place.",
-    cron: "0 8 * * *", schedule: "Daily @ 8:00 AM", category: "lifestyle",
-    message: "Scan emails for shipping confirmations and tracking updates. Compile all packages in transit: item, carrier, status, ETA. Highlight anything arriving today.",
-    tags: ["daily","isolated","email"], votes: 28, community: false, ts: 1737100000000
-  },
-  {
-    id: "seed-033", title: "Home Maintenance Scheduler",
-    desc: "Monthly seasonal maintenance checklist — HVAC, smoke detectors, yard work, etc.",
-    cron: "0 9 1 * *", schedule: "1st of each month", category: "lifestyle",
-    message: "Generate this month's home maintenance checklist based on the season. HVAC filters, smoke detectors, appliance cleaning, yard work. Include time estimates.",
-    tags: ["monthly","isolated","telegram"], votes: 24, community: false, ts: 1737100000000
-  },
-  {
-    id: "seed-034", title: "Daily Gratitude Prompt",
-    desc: "Evening reflection — one win, one thing you're grateful for, one thing to let go of.",
-    cron: "0 21 * * *", schedule: "Daily @ 9:00 PM", category: "lifestyle",
-    message: "Evening reflection time. Ask: (1) Biggest win today? (2) What are you grateful for? (3) What are you letting go of? Save responses to my journal.",
-    tags: ["daily","main-session","journaling"], votes: 20, community: false, ts: 1737100000000
-  },
-  {
-    id: "seed-035", title: "Bill Payment Radar",
-    desc: "3 days before any bill is due, get a heads-up with amount and payment method.",
-    cron: "0 9 * * *", schedule: "Daily @ 9:00 AM", category: "lifestyle",
-    message: "Check upcoming bills due in the next 3 days. Remind me: what, amount, payment method, action needed. If nothing due, stay silent.",
-    tags: ["daily","conditional"], votes: 31, community: false, ts: 1737100000000
-  },
-  {
-    id: "seed-036", title: "Random Recipe Roulette",
-    desc: "A recipe from a random world cuisine each day. Step-by-step with grocery list.",
-    cron: "0 16 * * *", schedule: "Daily @ 4:00 PM", category: "lifestyle",
-    message: "Pick a random world cuisine (Japanese, Ethiopian, Peruvian, Thai, Korean, etc). One authentic recipe, under 45 min, mostly common ingredients. Include grocery list.",
-    tags: ["daily","isolated","cooking"], votes: 35, community: false, ts: 1737100000000
-  },
-  {
-    id: "seed-037", title: "True Crime Deep Dive",
-    desc: "Weekly installment exploring an unsolved case — evidence, theories, and recent developments.",
-    cron: "0 20 * * 5", schedule: "Fridays @ 8:00 PM", category: "lifestyle",
-    message: "Pick one unsolved or recently-updated true crime case. Summary: what happened, key evidence, theories, recent developments. Include source links.",
-    tags: ["weekly","isolated","web-search"], votes: 37, community: false, ts: 1737100000000
-  },
-  {
-    id: "seed-038", title: "Daily Dose of Knowledge",
-    desc: "Each morning, learn a concept, historical event, scientific discovery, or useful skill.",
-    cron: "0 7 * * *", schedule: "Daily @ 7:00 AM", category: "learning",
-    message: "Teach me one interesting thing. Rotate: mental model, historical event, scientific concept, business strategy, life skill. Under 150 words. Include one way to apply it today.",
-    tags: ["daily","isolated","telegram"], votes: 32, community: false, ts: 1737100000000
-  },
-  {
-    id: "seed-039", title: "Industry News Radar",
-    desc: "Morning scan of HR tech, AI, and workforce analytics news. Signal only, no noise.",
-    cron: "0 8 * * 1-5", schedule: "Weekdays @ 8:00 AM", category: "learning",
-    message: "Top news in HR technology, AI/ML, and workforce analytics. Top 3 stories, one sentence each. Skip hype/PR. Flag anything impacting HRIS professionals.",
-    tags: ["weekdays","isolated","web-search"], votes: 30, community: false, ts: 1737100000000
-  },
-  {
-    id: "seed-040", title: "GitHub Trending Scout",
-    desc: "Daily digest of trending repos relevant to your tech stack and interests.",
-    cron: "0 12 * * 1-5", schedule: "Weekdays @ 12:00 PM", category: "learning",
-    message: "Check GitHub trending. Filter: AI/ML tools, automation frameworks, self-hosted apps, dev productivity. Top 5 with name, stars, description, and why it's useful to me.",
-    tags: ["weekdays","isolated","web-search"], votes: 38, community: false, ts: 1737100000000
-  },
-  {
-    id: "seed-041", title: "AI Research Paper Summary",
-    desc: "Weekly digest of impactful AI/ML papers explained in plain English.",
-    cron: "0 9 * * 6", schedule: "Saturdays @ 9:00 AM", category: "learning",
-    message: "Most discussed AI/ML papers this week. Top 3: plain-English summary, why it matters, practical applications. Skip purely theoretical papers.",
-    tags: ["weekly","isolated","web-search"], votes: 27, community: false, ts: 1737100000000
-  },
-  {
-    id: "seed-042", title: "Coding Challenge of the Day",
-    desc: "Bite-sized coding problem each morning to sharpen skills. Python, JS, or SQL.",
-    cron: "0 8 * * 1-5", schedule: "Weekdays @ 8:00 AM", category: "learning",
-    message: "Quick coding challenge, 15 minutes max. Rotate Python, JavaScript, SQL. Problem statement, example input/output, difficulty rating. Send solution at noon if no response.",
-    tags: ["weekdays","isolated"], votes: 25, community: false, ts: 1737100000000
-  },
-  {
-    id: "seed-043", title: "Stoic Daily Reflection",
-    desc: "Morning Stoic wisdom paired with a practical challenge for the day.",
-    cron: "0 6 * * *", schedule: "Daily @ 6:00 AM", category: "learning",
-    message: "One Stoic principle from Marcus Aurelius, Seneca, or Epictetus. Explain in modern terms (2 sentences). One specific challenge to practice it today.",
-    tags: ["daily","isolated","philosophy"], votes: 29, community: false, ts: 1737100000000
-  },
-  {
-    id: "seed-044", title: "Quote of the Day",
-    desc: "A thoughtfully selected quote from business leaders, philosophers, or creators.",
-    cron: "30 6 * * *", schedule: "Daily @ 6:30 AM", category: "learning",
-    message: "One powerful quote. Rotate: stoic philosophy, business wisdom, creative inspiration, historical figures. Who said it and how to apply it today. No clichés.",
-    tags: ["daily","isolated","whatsapp"], votes: 22, community: false, ts: 1737100000000
-  },
-  {
-    id: "seed-045", title: "LinkedIn Engagement Coach",
-    desc: "Daily suggestions for posts to comment on, people to connect with, and content to share.",
-    cron: "0 9 * * 1-5", schedule: "Weekdays @ 9:00 AM", category: "social",
-    message: "Find trending LinkedIn posts in HR tech, AI, consulting. 3 posts I should comment on with draft comments that add value. 2 people to connect with this week.",
-    tags: ["weekdays","isolated","linkedin"], votes: 34, community: false, ts: 1737100000000
-  },
-  {
-    id: "seed-046", title: "Cold Outreach Drip",
-    desc: "Weekly batch of personalized outreach messages researched against the lead's company and role.",
-    cron: "0 8 * * 2", schedule: "Tuesdays @ 8:00 AM", category: "social",
-    message: "Next 5 leads from my outreach list. Research each company/role. Draft personalized LinkedIn/email under 100 words referencing their specific pain points.",
-    tags: ["weekly","isolated","outreach"], votes: 28, community: false, ts: 1737100000000
-  },
-  {
-    id: "seed-047", title: "Follow-Up Nagger",
-    desc: "Find emails sent 3+ days ago with no reply. Draft polite follow-ups.",
-    cron: "0 10 * * 1,4", schedule: "Mon & Thu @ 10 AM", category: "social",
-    message: "Scan sent emails from 3-7 days ago without replies. Draft friendly follow-ups for each. Priority: client leads > business contacts > everything else.",
-    tags: ["2x-weekly","isolated","email"], votes: 31, community: false, ts: 1737100000000
-  },
-  {
-    id: "seed-048", title: "Birthday & Anniversary Reminder",
-    desc: "Morning check for upcoming birthdays and important dates with personalized message drafts.",
-    cron: "0 8 * * *", schedule: "Daily @ 8:00 AM", category: "social",
-    message: "Check contacts and calendar for birthdays or anniversaries in the next 3 days. Suggest a personalized message for each. If nothing upcoming, stay silent.",
-    tags: ["daily","conditional"], votes: 20, community: false, ts: 1737100000000
-  },
-  {
-    id: "seed-049", title: "Side Project Accountability",
-    desc: "Daily evening check-in on your side project. What shipped? What's blocking?",
-    cron: "0 20 * * *", schedule: "Daily @ 8:00 PM", category: "productivity",
-    message: "Side project check-in. Ask: What did you work on today? Ship anything? What's blocking you? Suggest one 15-min task to maintain momentum. Track my consecutive day streak.",
-    tags: ["daily","main-session","accountability"], votes: 33, community: false, ts: 1737100000000
-  },
-  {
-    id: "seed-050", title: "News Detox Summary",
-    desc: "One calm, balanced 5-headline summary per day. Stay informed without doom-scrolling.",
-    cron: "0 12 * * *", schedule: "Daily @ 12:00 PM", category: "lifestyle",
-    message: "Balanced 5-headline news summary: 2 world/US news, 1 tech/AI, 1 business, 1 positive story. One sentence each. No sensationalism, no opinion. Source name for each.",
-    tags: ["daily","isolated","web-search"], votes: 36, community: false, ts: 1737100000000
-  },
-  {
-    id: "seed-051", title: "Freelance Lead Hunter",
-    desc: "Daily scan of job boards for freelance gigs matching your skills and rate.",
-    cron: "0 9 * * 1-5", schedule: "Weekdays @ 9:00 AM", category: "finance",
-    message: "Search for freelance/contract gigs in HRIS, SAP SuccessFactors, workforce analytics, HR reporting. LinkedIn Jobs, Indeed, Upwork. Remote, $75+/hr, Fortune 500. Top 5 with links.",
-    tags: ["weekdays","isolated","web-search"], votes: 35, community: false, ts: 1737100000000
-  },
-  {
-    id: "seed-052", title: "Competitor Price Monitor",
-    desc: "Daily scan of competitor pricing pages. Alert only when something changes.",
-    cron: "0 7 * * 1-5", schedule: "Weekdays @ 7:00 AM", category: "finance",
-    message: "Check competitor pricing pages. Compare to last known prices. Only alert on changes: new tiers, price changes, new features, discontinued offerings. If nothing changed, stay silent.",
-    tags: ["weekdays","conditional"], votes: 26, community: false, ts: 1737100000000
-  },
-  {
-    id: "seed-053", title: "Motivational Monday Kickstart",
-    desc: "Start each week with a personalized pep talk based on last week's wins and this week's goals.",
-    cron: "0 6 * * 1", schedule: "Mondays @ 6:00 AM", category: "productivity",
-    message: "It's Monday. Review last week's accomplishments and this week's plate. Give me a genuine pep talk specific to my situation. End with one bold thing to try this week.",
-    tags: ["weekly","main-session"], votes: 23, community: false, ts: 1737100000000
-  },
-  {
-    id: "seed-054", title: "Idea Parking Lot Review",
-    desc: "Weekly review of brain-dumped ideas. Prioritize the best, archive the stale.",
-    cron: "0 11 * * 6", schedule: "Saturdays @ 11 AM", category: "creative",
-    message: "Review my idea parking lot (notes, bookmarks from this week). Organize by: business, content, project, personal. Top 3 get a next step. Archive anything that's lost its spark.",
-    tags: ["weekly","isolated","review"], votes: 22, community: false, ts: 1737100000000
-  },
-  {
-    id: "seed-055", title: "Expense Report Auto-Draft",
-    desc: "End of month, compile receipts and transactions into a formatted expense report.",
-    cron: "0 9 28-31 * *", schedule: "Last days of month",  category: "finance",
-    message: "Compile this month's business expenses from receipts and transactions. Categorize by type (travel, software, meals, office). Format as a clean expense report with totals per category.",
-    tags: ["monthly","isolated","email"], votes: 27, community: false, ts: 1737100000000
-  },
-  {
-    id: "seed-056", title: "Digital Declutter Coach",
-    desc: "Weekly 15-minute digital cleanup task — subscriptions, files, inbox, bookmarks.",
-    cron: "0 14 * * 6", schedule: "Saturdays @ 2:00 PM", category: "lifestyle",
-    message: "One digital declutter task, 15 minutes max. Rotate: unsubscribe from emails, clean desktop files, audit subscriptions, organize cloud storage, clean bookmarks. Specific and actionable.",
-    tags: ["weekly","isolated","telegram"], votes: 18, community: false, ts: 1737100000000
-  },
-  {
-    id: "seed-057", title: "Dream Journal Analyzer",
-    desc: "Log dreams each morning and get pattern analysis — recurring themes and emotional tones.",
-    cron: "0 6 * * *", schedule: "Daily @ 6:00 AM", category: "creative",
-    message: "Ask me to describe any dream from last night. Record it. Note recurring themes, symbols, or emotional patterns across recent entries. Keep analysis to 2-3 sentences.",
-    tags: ["daily","main-session","journaling"], votes: 17, community: false, ts: 1737100000000
-  },
-  {
-    id: "seed-058", title: "Gratitude to Others",
-    desc: "Weekly prompt to send appreciation to someone who helped you recently.",
-    cron: "0 11 * * 3", schedule: "Wednesdays @ 11 AM", category: "social",
-    message: "Think about recent interactions. Suggest one person to thank. Draft a short, heartfelt message specific to what they did. No generic templates.",
-    tags: ["weekly","isolated","relationships"], votes: 19, community: false, ts: 1737100000000
+firebase.initializeApp({
+  apiKey: "AIzaSyCm4Bd2lEAekbs9tfiIGmw-ZpI_lLaqhUA",
+  authDomain: "creativecron.firebaseapp.com",
+  projectId: "creativecron",
+  storageBucket: "creativecron.firebasestorage.app",
+  messagingSenderId: "754833971609",
+  appId: "1:754833971609:web:506e8296e3a332e60f9b08"
+});
+
+const db = firebase.firestore();
+
+// ═══════════════════════════════════════════════
+// ANONYMOUS USER ID (persisted in localStorage)
+// ═══════════════════════════════════════════════
+function getUserId() {
+  let uid = localStorage.getItem('cc_uid');
+  if (!uid) {
+    uid = 'u_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    localStorage.setItem('cc_uid', uid);
   }
-];
+  return uid;
+}
+const USER_ID = getUserId();
+
+// ═══════════════════════════════════════════════
+// EMAIL STATE
+// ═══════════════════════════════════════════════
+let userEmail = localStorage.getItem('cc_email') || '';
+let pendingAction = null; // { type: 'vote'|'submit', args }
+
+function hasEmail() { return !!userEmail; }
+
+function requireEmail(actionType, args) {
+  if (hasEmail()) return true;
+  pendingAction = { type: actionType, args };
+  document.getElementById('emailModal').classList.add('open');
+  document.getElementById('modal-email').focus();
+  return false;
+}
+
+async function confirmEmail() {
+  const input = document.getElementById('modal-email');
+  const email = input.value.trim().toLowerCase();
+
+  if (!email || !email.includes('@') || !email.includes('.')) {
+    input.style.borderColor = 'var(--red)';
+    input.style.boxShadow = '0 0 0 3px var(--red-dim)';
+    setTimeout(() => { input.style.borderColor = ''; input.style.boxShadow = ''; }, 2000);
+    return;
+  }
+
+  const btn = document.getElementById('emailConfirmBtn');
+  btn.disabled = true;
+  btn.textContent = 'saving...';
+
+  const wantsNewsletter = document.getElementById('modal-newsletter').checked;
+
+  try {
+    // Save email to Firebase
+    await db.collection('emails').doc(USER_ID).set({
+      email,
+      newsletter: wantsNewsletter,
+      source: 'gate-modal',
+      createdAt: Date.now(),
+      uid: USER_ID
+    }, { merge: true });
+
+    // Save locally
+    userEmail = email;
+    localStorage.setItem('cc_email', email);
+
+    // Close modal
+    document.getElementById('emailModal').classList.remove('open');
+    showToast('✓ Welcome to the community!');
+
+    // Execute pending action
+    if (pendingAction) {
+      if (pendingAction.type === 'vote') {
+        vote(pendingAction.args.jobId, pendingAction.args.direction);
+      } else if (pendingAction.type === 'submit') {
+        submitJob();
+      }
+      pendingAction = null;
+    }
+  } catch (err) {
+    console.error('Email save error:', err);
+    showToast('⚠ Something went wrong — try again');
+  }
+
+  btn.disabled = false;
+  btn.textContent = "let's go →";
+}
+
+async function subscribeNewsletter() {
+  const input = document.getElementById('nl-email');
+  const email = input.value.trim().toLowerCase();
+
+  if (!email || !email.includes('@') || !email.includes('.')) {
+    input.style.borderColor = 'var(--red)';
+    setTimeout(() => { input.style.borderColor = ''; }, 2000);
+    return;
+  }
+
+  try {
+    // Use email as doc ID to dedupe
+    await db.collection('emails').doc(email.replace(/[^a-zA-Z0-9]/g, '_')).set({
+      email,
+      newsletter: true,
+      source: 'footer-signup',
+      createdAt: Date.now(),
+      uid: USER_ID
+    }, { merge: true });
+
+    document.getElementById('nlForm').style.display = 'none';
+    document.getElementById('nlSuccess').style.display = 'block';
+
+    // Also save locally if they haven't registered yet
+    if (!userEmail) {
+      userEmail = email;
+      localStorage.setItem('cc_email', email);
+    }
+  } catch (err) {
+    console.error('Newsletter signup error:', err);
+    showToast('⚠ Signup failed — try again');
+  }
+}
 
 // ═══════════════════════════════════════════════
 // STATE
 // ═══════════════════════════════════════════════
-let allJobs = [...SEED_JOBS];
-let communityJobs = [];
-let userVotes = {};
+let allJobs = [];
+let userVotes = {}; // { jobId: 1 or -1 }
 let activeFilter = 'all';
 let activeSort = 'top';
-let storageAvailable = false;
 
 const grid = document.getElementById('grid');
 const search = document.getElementById('search');
@@ -1238,100 +1143,189 @@ const countEl = document.getElementById('count');
 const footerStats = document.getElementById('footerStats');
 
 // ═══════════════════════════════════════════════
-// STORAGE
+// SEED DATA
 // ═══════════════════════════════════════════════
-async function initStorage() {
-  try {
-    if (window.storage) {
-      storageAvailable = true;
-      await loadCommunityJobs();
-      await loadUserVotes();
+const SEED_JOBS = [
+  { id:"seed-001",title:"Morning Command Center",desc:"Wake up to a briefing with today's weather, calendar events, top 3 inbox emails, and your priority tasks.",cron:"0 6 * * *",schedule:"Daily @ 6:00 AM",category:"productivity",message:"Send me a morning briefing: weather in my city, today's calendar events, top 3 unread emails by priority, and my open tasks. Keep it under 200 words.",tags:["daily","isolated","telegram"],votes:47,community:false,ts:1737100000000 },
+  { id:"seed-002",title:"End-of-Day Shutdown Ritual",desc:"Summary of what you accomplished today, loose threads, and a suggested priority list for tomorrow.",cron:"0 18 * * 1-5",schedule:"Weekdays @ 6:00 PM",category:"productivity",message:"Review today's activity. Summarize what I accomplished, flag anything unfinished, and draft my top 3 priorities for tomorrow. End with one thing I did well today.",tags:["weekdays","isolated","whatsapp"],votes:39,community:false,ts:1737100000000 },
+  { id:"seed-003",title:"Weekly Review Prep",desc:"Every Sunday evening, compile a structured review — wins, blockers, lessons learned, and goals for next week.",cron:"0 19 * * 0",schedule:"Sundays @ 7:00 PM",category:"productivity",message:"Prepare my weekly review. List this week's accomplishments, any blockers, lessons learned, and suggest 3 goals for next week.",tags:["weekly","isolated","email"],votes:34,community:false,ts:1737100000000 },
+  { id:"seed-004",title:"Meeting Prep Assistant",desc:"30 minutes before each calendar event, get attendee info, context, and suggested talking points.",cron:"*/30 * * * 1-5",schedule:"Every 30 min (weekdays)",category:"productivity",message:"Check my calendar for meetings starting in the next 30 minutes. Give me a prep brief: attendees, topic, relevant notes, and 3 talking points.",tags:["frequent","main-session"],votes:41,community:false,ts:1737100000000 },
+  { id:"seed-005",title:"Inbox Zero Coach",desc:"Twice daily email triage — categorize unread as urgent, needs response, FYI, or archive.",cron:"0 9,14 * * 1-5",schedule:"Weekdays @ 9 AM & 2 PM",category:"productivity",message:"Scan my unread emails. Categorize each as: 🔴 Urgent, 🟡 Needs Response, 🔵 FYI, or ⚪ Archive. Draft replies for urgent ones.",tags:["twice-daily","isolated"],votes:36,community:false,ts:1737100000000 },
+  { id:"seed-006",title:"Focus Time Guardian",desc:"During deep work blocks, only interrupt if something is genuinely critical.",cron:"0 11 * * 1-5",schedule:"Weekdays @ 11:00 AM",category:"productivity",message:"Check inbox and messages from the last 2 hours. Only notify me if genuinely time-sensitive. If nothing urgent, respond 'All clear — stay focused 🎯'.",tags:["weekdays","conditional"],votes:28,community:false,ts:1737100000000 },
+  { id:"seed-007",title:"Paleo Meal Planner",desc:"Every afternoon, get a creative high-protein, low-carb paleo dinner recipe with a grocery list.",cron:"0 14 * * *",schedule:"Daily @ 2:00 PM",category:"health",message:"Send me a creative paleo dinner recipe — high protein, low carb. Include macros, step-by-step instructions, and a grocery shopping list. No repeats from this week.",tags:["daily","isolated","telegram"],votes:52,community:false,ts:1737100000000 },
+  { id:"seed-008",title:"Weekly Meal Prep Blueprint",desc:"Sunday morning: 5 lunches and 5 dinners with a combined shopping list organized by aisle.",cron:"0 8 * * 0",schedule:"Sundays @ 8:00 AM",category:"health",message:"Create a weekly meal prep plan: 5 lunches and 5 dinners. High protein, anti-inflammatory. Shopping list organized by grocery section. Prep time under 3 hours total.",tags:["weekly","isolated","email"],votes:45,community:false,ts:1737100000000 },
+  { id:"seed-009",title:"Hydration & Movement Nudge",desc:"Every 2 hours during work, a reminder to drink water and a 2-minute stretch suggestion.",cron:"0 9,11,13,15,17 * * 1-5",schedule:"Every 2hrs (9-5)",category:"health",message:"Quick check-in: remind me to drink water and suggest one 2-minute stretch I can do at my desk. Make it different each time.",tags:["frequent","isolated"],votes:22,community:false,ts:1737100000000 },
+  { id:"seed-010",title:"Workout Generator",desc:"Custom workout plan alternating muscle groups. Bodyweight and dumbbells only, under 45 minutes.",cron:"0 5 * * 1,3,5",schedule:"Mon/Wed/Fri @ 5 AM",category:"health",message:"Generate today's workout. Alternate upper/lower/full body. Warm-up, main sets with reps, cool-down. Under 45 min, bodyweight + dumbbells only.",tags:["3x-weekly","isolated"],votes:31,community:false,ts:1737100000000 },
+  { id:"seed-011",title:"CGM Glucose Insight Digest",desc:"Evening review of your glucose patterns — spikes, steady periods, and food suggestions for tomorrow.",cron:"0 20 * * *",schedule:"Daily @ 8:00 PM",category:"health",message:"Review my glucose data from today. Identify spikes and likely causes. Note stable periods. Suggest one meal swap for tomorrow. Keep the tone encouraging.",tags:["daily","isolated","health-data"],votes:29,community:false,ts:1737100000000 },
+  { id:"seed-012",title:"Market Morning Brief",desc:"Pre-market stock quotes for your watchlist, movers, and top financial headlines.",cron:"0 8 * * 1-5",schedule:"Weekdays @ 8:00 AM",category:"finance",message:"Pre-market brief: S&P 500 futures, my watchlist (AAPL, MSFT, NVDA, TSLA, VOO), major premarket movers, and top 3 financial headlines.",tags:["weekdays","isolated","telegram"],votes:43,community:false,ts:1737100000000 },
+  { id:"seed-013",title:"Real Estate Deal Scanner",desc:"Daily scan for syndication opportunities, REIT news, and Fundrise portfolio updates.",cron:"0 12 * * 1-5",schedule:"Weekdays @ 12:00 PM",category:"finance",message:"Search for new real estate syndication deals and crowdfunding opportunities. Focus on value-add multifamily, 7%+ IRR, $50K+ minimums. Check Fundrise for updates.",tags:["weekdays","isolated","web-search"],votes:26,community:false,ts:1737100000000 },
+  { id:"seed-014",title:"API Cost Watchdog",desc:"Monitor AI API spending across providers. Alert if daily spend exceeds your threshold.",cron:"0 22 * * *",schedule:"Daily @ 10:00 PM",category:"finance",message:"Check my API usage today across all providers. Report total spend, tokens used, cost per provider. Alert if daily spend exceeded $5. Compare to 7-day average.",tags:["daily","isolated","cost-report"],votes:38,community:false,ts:1737100000000 },
+  { id:"seed-015",title:"FIRE Progress Tracker",desc:"Monthly snapshot of financial independence progress — net worth, savings rate, and projected timeline.",cron:"0 9 1 * *",schedule:"1st of each month",category:"finance",message:"Generate my monthly FIRE report: net worth estimate, savings rate, investment performance, updated FI date projection. Compare to last month.",tags:["monthly","isolated","email"],votes:33,community:false,ts:1737100000000 },
+  { id:"seed-016",title:"Crypto Price Sentinel",desc:"Only notify if there's been a 5%+ swing on your watchlist. Silence when flat.",cron:"0 9,21 * * *",schedule:"Daily @ 9 AM & 9 PM",category:"finance",message:"Check BTC, ETH, SOL prices. Only message me if any moved 5%+ in the last 12 hours. Include direction, %, and any obvious catalyst. If flat, stay silent.",tags:["twice-daily","conditional"],votes:27,community:false,ts:1737100000000 },
+  { id:"seed-017",title:"Git Auto-Backup",desc:"Hourly commit and push of workspace files. Never lose agent modifications again.",cron:"0 * * * *",schedule:"Every hour",category:"devops",message:"Run git add -A in my workspace. If changes exist, commit with 'auto: hourly backup [timestamp]' and push. If no changes, skip silently.",tags:["hourly","isolated","git"],votes:44,community:false,ts:1737100000000 },
+  { id:"seed-018",title:"Server Health Pulse",desc:"Check VPS vitals — CPU, memory, disk, processes. Alert only if something's off.",cron:"*/15 * * * *",schedule:"Every 15 minutes",category:"devops",message:"Check server health: CPU, memory, disk, key processes. Only alert if CPU > 80%, memory > 90%, disk > 85%, or a critical process is down. Otherwise stay silent.",tags:["frequent","conditional"],votes:37,community:false,ts:1737100000000 },
+  { id:"seed-019",title:"SSL Certificate Watcher",desc:"Weekly check of all your domains' SSL certs. Alert 30 days before expiration.",cron:"0 9 * * 1",schedule:"Mondays @ 9:00 AM",category:"devops",message:"Check SSL certificate expiration for all my domains. Flag any expiring within 30 days. If all healthy, send 'All certs valid ✅'.",tags:["weekly","isolated"],votes:30,community:false,ts:1737100000000 },
+  { id:"seed-020",title:"Dependency Vulnerability Scanner",desc:"Daily audit of project dependencies for known security vulnerabilities.",cron:"0 6 * * *",schedule:"Daily @ 6:00 AM",category:"devops",message:"Run npm audit and pip check on my projects. Report high/critical vulnerabilities with package name, severity, and fix. Skip low/moderate unless 10+.",tags:["daily","isolated","security"],votes:32,community:false,ts:1737100000000 },
+  { id:"seed-021",title:"Docker Cleanup Crew",desc:"Weekly prune of dangling images, stopped containers, and unused volumes.",cron:"0 3 * * 0",schedule:"Sundays @ 3:00 AM",category:"devops",message:"Run docker system prune for dangling images, stopped containers, unused networks. Report disk space reclaimed. Do NOT remove named volumes.",tags:["weekly","isolated","docker"],votes:25,community:false,ts:1737100000000 },
+  { id:"seed-022",title:"Uptime Monitor",desc:"Ping your sites every 5 minutes. Alert immediately on non-200 responses.",cron:"*/5 * * * *",schedule:"Every 5 minutes",category:"devops",message:"Ping my endpoints for 200 status. If any return non-200 or take >5 seconds, alert immediately with status code and response time. Otherwise stay silent.",tags:["frequent","conditional"],votes:35,community:false,ts:1737100000000 },
+  { id:"seed-023",title:"Changelog Generator",desc:"Friday auto-generated changelog from the week's git commits across all repos.",cron:"0 17 * * 5",schedule:"Fridays @ 5:00 PM",category:"devops",message:"Review all git commits this week. Generate a changelog grouped by Features, Fixes, Chores. Conventional commit style. Save to ~/workspace/changelogs/.",tags:["weekly","isolated","git"],votes:24,community:false,ts:1737100000000 },
+  { id:"seed-024",title:"Log Anomaly Hunter",desc:"Scan app logs for error spikes, new error types, or unusual patterns.",cron:"0 */4 * * *",schedule:"Every 4 hours",category:"devops",message:"Scan the last 4 hours of application logs. Identify error spikes, new error types, or unusual patterns. Only notify if something notable is found.",tags:["4-hourly","conditional"],votes:23,community:false,ts:1737100000000 },
+  { id:"seed-025",title:"TikTok Content Generator",desc:"Daily content ideas with hooks, scripts, and trending format suggestions for your niche.",cron:"0 10 * * *",schedule:"Daily @ 10:00 AM",category:"creative",message:"Generate 3 TikTok ideas for AI tools, career advice, and investing. Each: scroll-stopping hook, 30-second script outline, trending format. Mix educational and entertaining.",tags:["daily","isolated","telegram"],votes:40,community:false,ts:1737100000000 },
+  { id:"seed-026",title:"Blog Post Idea Machine",desc:"Weekly batch of SEO-optimized blog post ideas based on trending industry topics.",cron:"0 9 * * 1",schedule:"Mondays @ 9:00 AM",category:"creative",message:"Research trending topics in HRIS, AI automation, freelancing. Generate 5 blog ideas with title, target keyword, search volume estimate, and outline.",tags:["weekly","isolated","web-search"],votes:29,community:false,ts:1737100000000 },
+  { id:"seed-027",title:"Daily Writing Prompt",desc:"A creative writing prompt each morning — micro-fiction, essay, LinkedIn post, or newsletter hook.",cron:"0 7 * * *",schedule:"Daily @ 7:00 AM",category:"creative",message:"One creative writing prompt. Rotate: micro-fiction (100 words), personal essay topic, LinkedIn post idea, or newsletter hook. Thought-provoking and specific.",tags:["daily","isolated","whatsapp"],votes:21,community:false,ts:1737100000000 },
+  { id:"seed-028",title:"Etsy Listing Optimizer",desc:"Weekly audit of Etsy listings — titles, tags, and keyword improvements based on search trends.",cron:"0 10 * * 3",schedule:"Wednesdays @ 10 AM",category:"creative",message:"Research trending Etsy search terms for digital planners, tax tools, financial spreadsheets. Compare against my listings. Suggest title and tag updates for visibility.",tags:["weekly","isolated","web-search"],votes:30,community:false,ts:1737100000000 },
+  { id:"seed-029",title:"Newsletter Draft Builder",desc:"Curate interesting links and draft a newsletter skeleton from the week's saved content.",cron:"0 14 * * 4",schedule:"Thursdays @ 2:00 PM",category:"creative",message:"Review saved articles and notes from this week. Draft a newsletter: intro hook, 3-5 curated links with commentary, one personal insight, closing thought.",tags:["weekly","isolated","email"],votes:26,community:false,ts:1737100000000 },
+  { id:"seed-030",title:"Weather-Based Outfit Planner",desc:"Clothing suggestion each morning based on today's forecast and your calendar.",cron:"0 6 * * *",schedule:"Daily @ 6:00 AM",category:"lifestyle",message:"Check today's weather (high, low, rain chance). Cross-reference with my calendar. Suggest what to wear. Be practical and specific.",tags:["daily","isolated","weather"],votes:19,community:false,ts:1737100000000 },
+  { id:"seed-031",title:"Weekend Adventure Finder",desc:"Thursday evening, get local events, restaurants, and activities for the weekend.",cron:"0 17 * * 4",schedule:"Thursdays @ 5:00 PM",category:"lifestyle",message:"Search for interesting weekend activities in my area: events, new restaurants, outdoor activities, free things. Top 5 ranked by uniqueness. Include dates and links.",tags:["weekly","isolated","web-search"],votes:33,community:false,ts:1737100000000 },
+  { id:"seed-032",title:"Package Tracking Hub",desc:"Daily scan of your email for shipping notifications. All active deliveries in one place.",cron:"0 8 * * *",schedule:"Daily @ 8:00 AM",category:"lifestyle",message:"Scan emails for shipping confirmations and tracking updates. Compile all packages in transit: item, carrier, status, ETA. Highlight anything arriving today.",tags:["daily","isolated","email"],votes:28,community:false,ts:1737100000000 },
+  { id:"seed-033",title:"Home Maintenance Scheduler",desc:"Monthly seasonal maintenance checklist — HVAC, smoke detectors, yard work, etc.",cron:"0 9 1 * *",schedule:"1st of each month",category:"lifestyle",message:"Generate this month's home maintenance checklist based on the season. HVAC filters, smoke detectors, appliance cleaning, yard work. Include time estimates.",tags:["monthly","isolated","telegram"],votes:24,community:false,ts:1737100000000 },
+  { id:"seed-034",title:"Daily Gratitude Prompt",desc:"Evening reflection — one win, one thing you're grateful for, one thing to let go of.",cron:"0 21 * * *",schedule:"Daily @ 9:00 PM",category:"lifestyle",message:"Evening reflection time. Ask: (1) Biggest win today? (2) What are you grateful for? (3) What are you letting go of? Save responses to my journal.",tags:["daily","main-session","journaling"],votes:20,community:false,ts:1737100000000 },
+  { id:"seed-035",title:"Bill Payment Radar",desc:"3 days before any bill is due, get a heads-up with amount and payment method.",cron:"0 9 * * *",schedule:"Daily @ 9:00 AM",category:"lifestyle",message:"Check upcoming bills due in the next 3 days. Remind me: what, amount, payment method, action needed. If nothing due, stay silent.",tags:["daily","conditional"],votes:31,community:false,ts:1737100000000 },
+  { id:"seed-036",title:"Random Recipe Roulette",desc:"A recipe from a random world cuisine each day. Step-by-step with grocery list.",cron:"0 16 * * *",schedule:"Daily @ 4:00 PM",category:"lifestyle",message:"Pick a random world cuisine (Japanese, Ethiopian, Peruvian, Thai, Korean, etc). One authentic recipe, under 45 min, mostly common ingredients. Include grocery list.",tags:["daily","isolated","cooking"],votes:35,community:false,ts:1737100000000 },
+  { id:"seed-037",title:"True Crime Deep Dive",desc:"Weekly installment exploring an unsolved case — evidence, theories, and recent developments.",cron:"0 20 * * 5",schedule:"Fridays @ 8:00 PM",category:"lifestyle",message:"Pick one unsolved or recently-updated true crime case. Summary: what happened, key evidence, theories, recent developments. Include source links.",tags:["weekly","isolated","web-search"],votes:37,community:false,ts:1737100000000 },
+  { id:"seed-038",title:"Daily Dose of Knowledge",desc:"Each morning, learn a concept, historical event, scientific discovery, or useful skill.",cron:"0 7 * * *",schedule:"Daily @ 7:00 AM",category:"learning",message:"Teach me one interesting thing. Rotate: mental model, historical event, scientific concept, business strategy, life skill. Under 150 words. Include one way to apply it today.",tags:["daily","isolated","telegram"],votes:32,community:false,ts:1737100000000 },
+  { id:"seed-039",title:"Industry News Radar",desc:"Morning scan of HR tech, AI, and workforce analytics news. Signal only, no noise.",cron:"0 8 * * 1-5",schedule:"Weekdays @ 8:00 AM",category:"learning",message:"Top news in HR technology, AI/ML, and workforce analytics. Top 3 stories, one sentence each. Skip hype/PR. Flag anything impacting HRIS professionals.",tags:["weekdays","isolated","web-search"],votes:30,community:false,ts:1737100000000 },
+  { id:"seed-040",title:"GitHub Trending Scout",desc:"Daily digest of trending repos relevant to your tech stack and interests.",cron:"0 12 * * 1-5",schedule:"Weekdays @ 12:00 PM",category:"learning",message:"Check GitHub trending. Filter: AI/ML tools, automation frameworks, self-hosted apps, dev productivity. Top 5 with name, stars, description, and why it's useful to me.",tags:["weekdays","isolated","web-search"],votes:38,community:false,ts:1737100000000 },
+  { id:"seed-041",title:"AI Research Paper Summary",desc:"Weekly digest of impactful AI/ML papers explained in plain English.",cron:"0 9 * * 6",schedule:"Saturdays @ 9:00 AM",category:"learning",message:"Most discussed AI/ML papers this week. Top 3: plain-English summary, why it matters, practical applications. Skip purely theoretical papers.",tags:["weekly","isolated","web-search"],votes:27,community:false,ts:1737100000000 },
+  { id:"seed-042",title:"Coding Challenge of the Day",desc:"Bite-sized coding problem each morning to sharpen skills. Python, JS, or SQL.",cron:"0 8 * * 1-5",schedule:"Weekdays @ 8:00 AM",category:"learning",message:"Quick coding challenge, 15 minutes max. Rotate Python, JavaScript, SQL. Problem statement, example input/output, difficulty rating. Send solution at noon if no response.",tags:["weekdays","isolated"],votes:25,community:false,ts:1737100000000 },
+  { id:"seed-043",title:"Stoic Daily Reflection",desc:"Morning Stoic wisdom paired with a practical challenge for the day.",cron:"0 6 * * *",schedule:"Daily @ 6:00 AM",category:"learning",message:"One Stoic principle from Marcus Aurelius, Seneca, or Epictetus. Explain in modern terms (2 sentences). One specific challenge to practice it today.",tags:["daily","isolated","philosophy"],votes:29,community:false,ts:1737100000000 },
+  { id:"seed-044",title:"Quote of the Day",desc:"A thoughtfully selected quote from business leaders, philosophers, or creators.",cron:"30 6 * * *",schedule:"Daily @ 6:30 AM",category:"learning",message:"One powerful quote. Rotate: stoic philosophy, business wisdom, creative inspiration, historical figures. Who said it and how to apply it today. No clichés.",tags:["daily","isolated","whatsapp"],votes:22,community:false,ts:1737100000000 },
+  { id:"seed-045",title:"LinkedIn Engagement Coach",desc:"Daily suggestions for posts to comment on, people to connect with, and content to share.",cron:"0 9 * * 1-5",schedule:"Weekdays @ 9:00 AM",category:"social",message:"Find trending LinkedIn posts in HR tech, AI, consulting. 3 posts I should comment on with draft comments that add value. 2 people to connect with this week.",tags:["weekdays","isolated","linkedin"],votes:34,community:false,ts:1737100000000 },
+  { id:"seed-046",title:"Cold Outreach Drip",desc:"Weekly batch of personalized outreach messages researched against the lead's company and role.",cron:"0 8 * * 2",schedule:"Tuesdays @ 8:00 AM",category:"social",message:"Next 5 leads from my outreach list. Research each company/role. Draft personalized LinkedIn/email under 100 words referencing their specific pain points.",tags:["weekly","isolated","outreach"],votes:28,community:false,ts:1737100000000 },
+  { id:"seed-047",title:"Follow-Up Nagger",desc:"Find emails sent 3+ days ago with no reply. Draft polite follow-ups.",cron:"0 10 * * 1,4",schedule:"Mon & Thu @ 10 AM",category:"social",message:"Scan sent emails from 3-7 days ago without replies. Draft friendly follow-ups for each. Priority: client leads > business contacts > everything else.",tags:["2x-weekly","isolated","email"],votes:31,community:false,ts:1737100000000 },
+  { id:"seed-048",title:"Birthday & Anniversary Reminder",desc:"Morning check for upcoming birthdays and important dates with personalized message drafts.",cron:"0 8 * * *",schedule:"Daily @ 8:00 AM",category:"social",message:"Check contacts and calendar for birthdays or anniversaries in the next 3 days. Suggest a personalized message for each. If nothing upcoming, stay silent.",tags:["daily","conditional"],votes:20,community:false,ts:1737100000000 },
+  { id:"seed-049",title:"Side Project Accountability",desc:"Daily evening check-in on your side project. What shipped? What's blocking?",cron:"0 20 * * *",schedule:"Daily @ 8:00 PM",category:"productivity",message:"Side project check-in. Ask: What did you work on today? Ship anything? What's blocking you? Suggest one 15-min task to maintain momentum. Track my consecutive day streak.",tags:["daily","main-session","accountability"],votes:33,community:false,ts:1737100000000 },
+  { id:"seed-050",title:"News Detox Summary",desc:"One calm, balanced 5-headline summary per day. Stay informed without doom-scrolling.",cron:"0 12 * * *",schedule:"Daily @ 12:00 PM",category:"lifestyle",message:"Balanced 5-headline news summary: 2 world/US news, 1 tech/AI, 1 business, 1 positive story. One sentence each. No sensationalism, no opinion. Source name for each.",tags:["daily","isolated","web-search"],votes:36,community:false,ts:1737100000000 },
+  { id:"seed-051",title:"Freelance Lead Hunter",desc:"Daily scan of job boards for freelance gigs matching your skills and rate.",cron:"0 9 * * 1-5",schedule:"Weekdays @ 9:00 AM",category:"finance",message:"Search for freelance/contract gigs in HRIS, SAP SuccessFactors, workforce analytics, HR reporting. LinkedIn Jobs, Indeed, Upwork. Remote, $75+/hr, Fortune 500. Top 5 with links.",tags:["weekdays","isolated","web-search"],votes:35,community:false,ts:1737100000000 },
+  { id:"seed-052",title:"Competitor Price Monitor",desc:"Daily scan of competitor pricing pages. Alert only when something changes.",cron:"0 7 * * 1-5",schedule:"Weekdays @ 7:00 AM",category:"finance",message:"Check competitor pricing pages. Compare to last known prices. Only alert on changes: new tiers, price changes, new features, discontinued offerings. If nothing changed, stay silent.",tags:["weekdays","conditional"],votes:26,community:false,ts:1737100000000 },
+  { id:"seed-053",title:"Motivational Monday Kickstart",desc:"Start each week with a personalized pep talk based on last week's wins and this week's goals.",cron:"0 6 * * 1",schedule:"Mondays @ 6:00 AM",category:"productivity",message:"It's Monday. Review last week's accomplishments and this week's plate. Give me a genuine pep talk specific to my situation. End with one bold thing to try this week.",tags:["weekly","main-session"],votes:23,community:false,ts:1737100000000 },
+  { id:"seed-054",title:"Idea Parking Lot Review",desc:"Weekly review of brain-dumped ideas. Prioritize the best, archive the stale.",cron:"0 11 * * 6",schedule:"Saturdays @ 11 AM",category:"creative",message:"Review my idea parking lot (notes, bookmarks from this week). Organize by: business, content, project, personal. Top 3 get a next step. Archive anything that's lost its spark.",tags:["weekly","isolated","review"],votes:22,community:false,ts:1737100000000 },
+  { id:"seed-055",title:"Expense Report Auto-Draft",desc:"End of month, compile receipts and transactions into a formatted expense report.",cron:"0 9 28-31 * *",schedule:"Last days of month",category:"finance",message:"Compile this month's business expenses from receipts and transactions. Categorize by type (travel, software, meals, office). Format as a clean expense report with totals per category.",tags:["monthly","isolated","email"],votes:27,community:false,ts:1737100000000 },
+  { id:"seed-056",title:"Digital Declutter Coach",desc:"Weekly 15-minute digital cleanup task — subscriptions, files, inbox, bookmarks.",cron:"0 14 * * 6",schedule:"Saturdays @ 2:00 PM",category:"lifestyle",message:"One digital declutter task, 15 minutes max. Rotate: unsubscribe from emails, clean desktop files, audit subscriptions, organize cloud storage, clean bookmarks. Specific and actionable.",tags:["weekly","isolated","telegram"],votes:18,community:false,ts:1737100000000 },
+  { id:"seed-057",title:"Dream Journal Analyzer",desc:"Log dreams each morning and get pattern analysis — recurring themes and emotional tones.",cron:"0 6 * * *",schedule:"Daily @ 6:00 AM",category:"creative",message:"Ask me to describe any dream from last night. Record it. Note recurring themes, symbols, or emotional patterns across recent entries. Keep analysis to 2-3 sentences.",tags:["daily","main-session","journaling"],votes:17,community:false,ts:1737100000000 },
+  { id:"seed-058",title:"Gratitude to Others",desc:"Weekly prompt to send appreciation to someone who helped you recently.",cron:"0 11 * * 3",schedule:"Wednesdays @ 11 AM",category:"social",message:"Think about recent interactions. Suggest one person to thank. Draft a short, heartfelt message specific to what they did. No generic templates.",tags:["weekly","isolated","relationships"],votes:19,community:false,ts:1737100000000 }
+];
+
+// ═══════════════════════════════════════════════
+// FIREBASE OPERATIONS
+// ═══════════════════════════════════════════════
+
+// Seed Firestore with initial jobs (runs once)
+async function seedDatabase() {
+  const meta = db.collection('meta').doc('seed_status');
+  const doc = await meta.get();
+  if (doc.exists && doc.data().seeded) return; // Already seeded
+
+  const batch_size = 500; // Firestore batch limit
+  let batch = db.batch();
+  let count = 0;
+
+  for (const job of SEED_JOBS) {
+    const ref = db.collection('jobs').doc(job.id);
+    batch.set(ref, {
+      title: job.title,
+      desc: job.desc,
+      cron: job.cron,
+      schedule: job.schedule,
+      category: job.category,
+      message: job.message,
+      tags: job.tags,
+      votes: job.votes,
+      community: false,
+      author: '',
+      ts: job.ts
+    });
+    count++;
+    if (count >= batch_size) {
+      await batch.commit();
+      batch = db.batch();
+      count = 0;
     }
-  } catch (e) {
-    console.log('Storage not available, using local state only');
   }
-  mergeAndRender();
+
+  // Mark as seeded
+  batch.set(meta, { seeded: true, seededAt: Date.now() });
+  await batch.commit();
+  console.log('Database seeded with', SEED_JOBS.length, 'jobs');
 }
 
-async function loadCommunityJobs() {
-  if (!storageAvailable) return;
-  try {
-    const keys = await window.storage.list('cj:', true);
-    if (keys && keys.keys) {
-      for (const key of keys.keys) {
-        try {
-          const result = await window.storage.get(key, true);
-          if (result && result.value) {
-            communityJobs.push(JSON.parse(result.value));
-          }
-        } catch (e) { /* skip bad entries */ }
-      }
-    }
-  } catch (e) { console.log('No community jobs yet'); }
+// Load all jobs from Firestore
+async function loadJobs() {
+  const snapshot = await db.collection('jobs').get();
+  allJobs = [];
+  snapshot.forEach(doc => {
+    allJobs.push({ id: doc.id, ...doc.data() });
+  });
 }
 
+// Load user's votes
 async function loadUserVotes() {
-  if (!storageAvailable) return;
-  try {
-    const result = await window.storage.get('my-votes');
-    if (result && result.value) {
-      userVotes = JSON.parse(result.value);
-    }
-  } catch (e) { /* fresh user */ }
+  const doc = await db.collection('votes').doc(USER_ID).get();
+  if (doc.exists) {
+    userVotes = doc.data() || {};
+  }
 }
 
-async function saveUserVotes() {
-  if (!storageAvailable) return;
-  try {
-    await window.storage.set('my-votes', JSON.stringify(userVotes));
-  } catch (e) { console.log('Failed to save votes'); }
+// Save a vote
+async function saveVote(jobId, direction) {
+  const current = userVotes[jobId] || 0;
+  const newVote = current === direction ? 0 : direction;
+  const delta = newVote - current;
+
+  // Update user's vote record
+  userVotes[jobId] = newVote;
+  if (newVote === 0) {
+    // Use FieldValue.delete() to clean up
+    await db.collection('votes').doc(USER_ID).set(
+      { [jobId]: firebase.firestore.FieldValue.delete() },
+      { merge: true }
+    );
+  } else {
+    await db.collection('votes').doc(USER_ID).set(
+      { [jobId]: newVote },
+      { merge: true }
+    );
+  }
+
+  // Update job's vote count atomically
+  if (delta !== 0) {
+    await db.collection('jobs').doc(jobId).update({
+      votes: firebase.firestore.FieldValue.increment(delta)
+    });
+
+    // Update local state
+    const job = allJobs.find(j => j.id === jobId);
+    if (job) job.votes += delta;
+  }
 }
 
-async function saveCommunityJob(job) {
-  if (!storageAvailable) return;
-  try {
-    await window.storage.set('cj:' + job.id, JSON.stringify(job), true);
-  } catch (e) { console.log('Failed to save job'); }
+// Submit a new job
+async function saveNewJob(jobData) {
+  const ref = await db.collection('jobs').add(jobData);
+  return ref.id;
 }
 
-async function updateJobVotes(job) {
-  if (!storageAvailable) return;
-  if (job.community) {
-    try {
-      await window.storage.set('cj:' + job.id, JSON.stringify(job), true);
-    } catch (e) { /* best effort */ }
+// ═══════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════
+async function init() {
+  try {
+    await seedDatabase();
+    await Promise.all([loadJobs(), loadUserVotes()]);
+    render();
+    updateFooterStats();
+  } catch (err) {
+    console.error('Init error:', err);
+    // Fallback to seed data if Firebase fails
+    allJobs = SEED_JOBS.map(j => ({ ...j }));
+    render();
+    showToast('⚠ Running in offline mode — votes won\'t save');
   }
 }
 
 // ═══════════════════════════════════════════════
-// MERGE & RENDER
+// RENDER
 // ═══════════════════════════════════════════════
-function mergeAndRender() {
-  // Apply user votes to seed jobs
-  allJobs = SEED_JOBS.map(j => {
-    const v = userVotes[j.id];
-    if (v) {
-      return { ...j, votes: j.votes + v };
-    }
-    return { ...j };
-  });
-
-  // Add community jobs with their votes
-  communityJobs.forEach(cj => {
-    const v = userVotes[cj.id] || 0;
-    allJobs.push({ ...cj, votes: (cj.votes || 0) + v });
-  });
-
-  update();
-  updateFooterStats();
-}
-
-function updateFooterStats() {
-  const total = allJobs.length;
-  const community = communityJobs.length;
-  footerStats.textContent = `${total} jobs indexed · ${community} community submissions · ${Object.keys(userVotes).length} votes cast`;
-}
-
 function getFilteredSorted() {
   const q = search.value.toLowerCase();
   let jobs = allJobs.filter(job => {
@@ -1350,7 +1344,6 @@ function getFilteredSorted() {
   } else {
     jobs.sort((a, b) => (b.ts || 0) - (a.ts || 0));
   }
-
   return jobs;
 }
 
@@ -1376,15 +1369,17 @@ function renderCards(jobs) {
     const catClass = `cat-${job.category}`;
     const myVote = userVotes[job.id] || 0;
     const scoreClass = job.votes > 0 ? 'positive' : job.votes < 0 ? 'negative' : '';
-    const msgPreview = job.message.length > 60 ? job.message.substring(0, 60) + '...' : job.message;
+    const msgPreview = (job.message || '').length > 60 ? job.message.substring(0, 60) + '...' : (job.message || '');
+
+    const escapedId = job.id.replace(/'/g, "\\'");
 
     card.innerHTML = `
       <div class="vote-col">
-        <button class="vote-btn up" onclick="showToast('⚠ Voting coming soon!')" title="Voting coming soon">
+        <button class="vote-btn up ${myVote === 1 ? 'voted' : ''}" onclick="vote('${escapedId}', 1)">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
         </button>
-        <span class="vote-score ${scoreClass}">${job.votes}</span>
-        <button class="vote-btn down" onclick="showToast('⚠ Voting coming soon!')" title="Voting coming soon">
+        <span class="vote-score ${scoreClass}">${job.votes || 0}</span>
+        <button class="vote-btn down ${myVote === -1 ? 'voted' : ''}" onclick="vote('${escapedId}', -1)">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
         </button>
       </div>
@@ -1398,7 +1393,7 @@ function renderCards(jobs) {
         </div>
         <div class="card-desc">${job.desc}</div>
         <div class="card-cron">
-          <button class="copy-btn" onclick="copyCmd(this, '${job.id}')">copy</button>
+          <button class="copy-btn" onclick="copyCmd('${escapedId}')">copy</button>
           <span class="prompt">$</span> openclaw cron add \\<br>
           &nbsp;&nbsp;<span class="flag">--name</span> <span class="string">"${job.title}"</span> \\<br>
           &nbsp;&nbsp;<span class="flag">--cron</span> <span class="string">"${job.cron}"</span> \\<br>
@@ -1415,38 +1410,39 @@ function renderCards(jobs) {
   });
 }
 
-function update() { renderCards(getFilteredSorted()); }
+function render() { renderCards(getFilteredSorted()); }
 
-// ═══════════════════════════════════════════════
-// VOTING
-// ═══════════════════════════════════════════════
-async function vote(jobId, direction) {
-  const current = userVotes[jobId] || 0;
+function updateFooterStats() {
+  const total = allJobs.length;
+  const community = allJobs.filter(j => j.community).length;
+  const voteCount = Object.values(userVotes).filter(v => v !== 0).length;
+  footerStats.textContent = `${total} jobs indexed · ${community} community submissions · ${voteCount} of your votes`;
 
-  if (current === direction) {
-    // Toggle off
-    userVotes[jobId] = 0;
-  } else {
-    userVotes[jobId] = direction;
+  // Hide newsletter form if already have email
+  if (userEmail) {
+    const nlForm = document.getElementById('nlForm');
+    const nlSuccess = document.getElementById('nlSuccess');
+    if (nlForm) nlForm.style.display = 'none';
+    if (nlSuccess) { nlSuccess.style.display = 'block'; nlSuccess.textContent = '✓ You\'re subscribed!'; }
   }
-
-  await saveUserVotes();
-
-  // Update community job's stored vote count
-  const cj = communityJobs.find(j => j.id === jobId);
-  if (cj) {
-    const delta = userVotes[jobId] - current;
-    cj.votes = (cj.votes || 0) + delta;
-    await updateJobVotes(cj);
-  }
-
-  mergeAndRender();
 }
 
 // ═══════════════════════════════════════════════
-// COPY
+// ACTIONS
 // ═══════════════════════════════════════════════
-function copyCmd(btn, jobId) {
+async function vote(jobId, direction) {
+  if (!requireEmail('vote', { jobId, direction })) return;
+  try {
+    await saveVote(jobId, direction);
+    render();
+    updateFooterStats();
+  } catch (err) {
+    console.error('Vote error:', err);
+    showToast('⚠ Vote failed — try again');
+  }
+}
+
+function copyCmd(jobId) {
   const job = allJobs.find(j => j.id === jobId);
   if (!job) return;
   const cmd = `openclaw cron add \\
@@ -1456,16 +1452,15 @@ function copyCmd(btn, jobId) {
   --message "${job.message}"`;
 
   navigator.clipboard.writeText(cmd).then(() => {
-    btn.textContent = 'copied!';
-    btn.classList.add('copied');
-    setTimeout(() => { btn.textContent = 'copy'; btn.classList.remove('copied'); }, 2000);
+    showToast('✓ Command copied to clipboard');
   });
 }
 
-// ═══════════════════════════════════════════════
-// SUBMIT
-// ═══════════════════════════════════════════════
 function toggleSubmit() {
+  if (!document.getElementById('submitPanel').classList.contains('open')) {
+    // Opening — require email first
+    if (!requireEmail('submit', {})) return;
+  }
   document.getElementById('submitPanel').classList.toggle('open');
 }
 
@@ -1483,7 +1478,6 @@ async function submitJob() {
     return;
   }
 
-  // Basic cron validation
   const cronParts = cron.split(' ');
   if (cronParts.length < 5 || cronParts.length > 6) {
     showToast('⚠ Invalid cron expression (need 5 or 6 fields)');
@@ -1494,35 +1488,39 @@ async function submitJob() {
   btn.disabled = true;
   btn.textContent = 'submitting...';
 
-  const job = {
-    id: 'community-' + Date.now() + '-' + Math.random().toString(36).substr(2, 6),
-    title,
-    category,
-    desc,
-    cron,
-    schedule: schedule || cron,
-    message,
-    author: author || 'anonymous',
-    tags: ["community"],
-    votes: 1,
-    community: true,
-    ts: Date.now()
-  };
-
   try {
-    await saveCommunityJob(job);
-    communityJobs.push(job);
-    userVotes[job.id] = 1;
-    await saveUserVotes();
+    const jobData = {
+      title,
+      category,
+      desc,
+      cron,
+      schedule: schedule || cron,
+      message,
+      author: author || 'anonymous',
+      tags: ['community'],
+      votes: 1,
+      community: true,
+      ts: Date.now()
+    };
+
+    const newId = await saveNewJob(jobData);
+    jobData.id = newId;
+    allJobs.push(jobData);
+
+    // Auto-upvote your own submission
+    userVotes[newId] = 1;
+    await db.collection('votes').doc(USER_ID).set({ [newId]: 1 }, { merge: true });
 
     // Clear form
     ['f-title','f-desc','f-cron','f-schedule','f-message','f-author'].forEach(id => document.getElementById(id).value = '');
     document.getElementById('f-category').value = '';
 
     toggleSubmit();
-    mergeAndRender();
+    render();
+    updateFooterStats();
     showToast('✓ Cron job submitted! Thanks for contributing.');
-  } catch (e) {
+  } catch (err) {
+    console.error('Submit error:', err);
     showToast('⚠ Failed to save — try again');
   }
 
@@ -1530,20 +1528,14 @@ async function submitJob() {
   btn.textContent = 'submit →';
 }
 
-// ═══════════════════════════════════════════════
-// SORT
-// ═══════════════════════════════════════════════
 function setSort(sort) {
   activeSort = sort;
   document.querySelectorAll('.sort-btn').forEach(b => {
     b.classList.toggle('active', b.dataset.sort === sort);
   });
-  update();
+  render();
 }
 
-// ═══════════════════════════════════════════════
-// TOAST
-// ═══════════════════════════════════════════════
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg;
@@ -1554,21 +1546,36 @@ function showToast(msg) {
 // ═══════════════════════════════════════════════
 // EVENTS
 // ═══════════════════════════════════════════════
-search.addEventListener('input', update);
+search.addEventListener('input', render);
 
 document.querySelectorAll('.filter-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     activeFilter = btn.dataset.filter;
-    update();
+    render();
   });
 });
 
+// Close email modal on overlay click or Escape
+document.getElementById('emailModal').addEventListener('click', (e) => {
+  if (e.target === e.currentTarget) {
+    e.currentTarget.classList.remove('open');
+    pendingAction = null;
+  }
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    document.getElementById('emailModal').classList.remove('open');
+    pendingAction = null;
+  }
+});
+
 // ═══════════════════════════════════════════════
-// INIT
+// GO
 // ═══════════════════════════════════════════════
-initStorage();
+init();
 </script>
 </body>
 </html>
