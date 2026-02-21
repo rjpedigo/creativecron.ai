@@ -309,6 +309,16 @@
     letter-spacing: 0.5px;
   }
 
+  .form-group .label-hint {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 11px;
+    color: var(--text-muted);
+    opacity: 0.7;
+    text-transform: none;
+    letter-spacing: 0;
+    margin-top: -2px;
+  }
+
   .form-group input,
   .form-group textarea,
   .form-group select {
@@ -877,7 +887,7 @@
   <div class="submit-panel" id="submitPanel">
     <div class="submit-form">
       <h3>$ submit-cron-job</h3>
-      <p class="sub">Share your automation with the community. Voted up = more visible.</p>
+      <p class="sub">Share your automation idea with the community. We'll handle the cron syntax — just describe what you want.</p>
       <div class="form-grid">
         <div class="form-group">
           <label>Job Name *</label>
@@ -902,20 +912,17 @@
           <textarea id="f-desc" placeholder="What does this cron job do? Keep it to 1-2 sentences." maxlength="200"></textarea>
         </div>
         <div class="form-group">
-          <label>Cron Expression *</label>
-          <input type="text" id="f-cron" placeholder="e.g. 0 7 * * *">
-        </div>
-        <div class="form-group">
-          <label>Schedule (human-readable)</label>
-          <input type="text" id="f-schedule" placeholder="e.g. Daily @ 7:00 AM">
-        </div>
-        <div class="form-group full">
-          <label>Message / Prompt *</label>
-          <textarea id="f-message" placeholder="The --message payload for your cron job. Be specific — vague prompts produce vague results." maxlength="500"></textarea>
+          <label>Schedule *</label>
+          <p class="label-hint">How often should it run? Plain English is fine.</p>
+          <input type="text" id="f-schedule" placeholder="e.g. Every weekday at 8 AM, Sundays at 7 PM">
         </div>
         <div class="form-group">
           <label>Your Name (optional)</label>
           <input type="text" id="f-author" placeholder="e.g. @yourusername" maxlength="30">
+        </div>
+        <div class="form-group full">
+          <label>Message / Prompt *</label>
+          <textarea id="f-message" placeholder="The instruction for your cron job. Be specific — vague prompts produce vague results." maxlength="500"></textarea>
         </div>
         <div class="form-actions">
           <button class="btn-cancel" onclick="toggleSubmit()">cancel</button>
@@ -1082,7 +1089,8 @@ async function confirmEmail() {
       if (pendingAction.type === 'vote') {
         vote(pendingAction.args.jobId, pendingAction.args.direction);
       } else if (pendingAction.type === 'submit') {
-        submitJob();
+        // Open the submit panel so user can fill out the form
+        document.getElementById('submitPanel').classList.add('open');
       }
       pendingAction = null;
     }
@@ -1127,6 +1135,62 @@ async function subscribeNewsletter() {
     console.error('Newsletter signup error:', err);
     showToast('⚠ Signup failed — try again');
   }
+}
+
+// ═══════════════════════════════════════════════
+// SCHEDULE-TO-CRON HELPER
+// ═══════════════════════════════════════════════
+function scheduleToCron(schedule) {
+  if (!schedule) return '* * * * *';
+  const s = schedule.toLowerCase().trim();
+
+  // Try to extract time like "8 AM", "7:30 PM", "14:00"
+  let hour = null, minute = 0;
+  const time12 = s.match(/(\d{1,2})(?::(\d{2}))?\s*(am|pm)/i);
+  const time24 = s.match(/(\d{1,2}):(\d{2})/);
+  if (time12) {
+    hour = parseInt(time12[1]);
+    minute = time12[2] ? parseInt(time12[2]) : 0;
+    if (time12[3].toLowerCase() === 'pm' && hour !== 12) hour += 12;
+    if (time12[3].toLowerCase() === 'am' && hour === 12) hour = 0;
+  } else if (time24) {
+    hour = parseInt(time24[1]);
+    minute = parseInt(time24[2]);
+  }
+
+  const h = hour !== null ? hour : '*';
+  const m = minute;
+
+  if (/every\s*(week)?day|daily/i.test(s) && !/weekday/i.test(s)) {
+    return `${m} ${h} * * *`;
+  }
+  if (/weekday/i.test(s) || /mon(day)?\s*(-|to|thru|through)\s*fri(day)?/i.test(s)) {
+    return `${m} ${h} * * 1-5`;
+  }
+  if (/weekly|every\s*(sunday|monday|tuesday|wednesday|thursday|friday|saturday)/i.test(s)) {
+    const days = { sunday:0,monday:1,tuesday:2,wednesday:3,thursday:4,friday:5,saturday:6 };
+    const dayMatch = s.match(/(sunday|monday|tuesday|wednesday|thursday|friday|saturday)/i);
+    const dow = dayMatch ? days[dayMatch[1].toLowerCase()] : 0;
+    return `${m} ${h} * * ${dow}`;
+  }
+  if (/monthly|every\s*month|1st\s*of/i.test(s)) {
+    return `${m} ${h} 1 * *`;
+  }
+  if (/hourly|every\s*hour/i.test(s)) {
+    return `0 * * * *`;
+  }
+  if (/every\s*(\d+)\s*min/i.test(s)) {
+    const mins = s.match(/every\s*(\d+)\s*min/i)[1];
+    return `*/${mins} * * * *`;
+  }
+  if (/every\s*(\d+)\s*hour/i.test(s)) {
+    const hrs = s.match(/every\s*(\d+)\s*hour/i)[1];
+    return `0 */${hrs} * * *`;
+  }
+
+  // Fallback: daily at the given time, or generic
+  if (hour !== null) return `${m} ${h} * * *`;
+  return '0 9 * * *'; // sensible default: daily at 9 AM
 }
 
 // ═══════════════════════════════════════════════
@@ -1275,7 +1339,6 @@ async function saveVote(jobId, direction) {
   // Update user's vote record
   userVotes[jobId] = newVote;
   if (newVote === 0) {
-    // Use FieldValue.delete() to clean up
     await db.collection('votes').doc(USER_ID).set(
       { [jobId]: firebase.firestore.FieldValue.delete() },
       { merge: true }
@@ -1468,21 +1531,17 @@ async function submitJob() {
   const title = document.getElementById('f-title').value.trim();
   const category = document.getElementById('f-category').value;
   const desc = document.getElementById('f-desc').value.trim();
-  const cron = document.getElementById('f-cron').value.trim();
   const schedule = document.getElementById('f-schedule').value.trim();
   const message = document.getElementById('f-message').value.trim();
   const author = document.getElementById('f-author').value.trim();
 
-  if (!title || !category || !desc || !cron || !message) {
+  if (!title || !category || !desc || !schedule || !message) {
     showToast('⚠ Fill in all required fields');
     return;
   }
 
-  const cronParts = cron.split(' ');
-  if (cronParts.length < 5 || cronParts.length > 6) {
-    showToast('⚠ Invalid cron expression (need 5 or 6 fields)');
-    return;
-  }
+  // Auto-generate cron expression from the human-readable schedule
+  const cron = scheduleToCron(schedule);
 
   const btn = document.getElementById('submitBtn');
   btn.disabled = true;
@@ -1512,7 +1571,7 @@ async function submitJob() {
     await db.collection('votes').doc(USER_ID).set({ [newId]: 1 }, { merge: true });
 
     // Clear form
-    ['f-title','f-desc','f-cron','f-schedule','f-message','f-author'].forEach(id => document.getElementById(id).value = '');
+    ['f-title','f-desc','f-schedule','f-message','f-author'].forEach(id => document.getElementById(id).value = '');
     document.getElementById('f-category').value = '';
 
     toggleSubmit();
@@ -1578,6 +1637,8 @@ document.addEventListener('keydown', (e) => {
 init();
 </script>
   <script data-goatcounter="https://creativecron.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+		  <script data-goatcounter="https://creativecron.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
